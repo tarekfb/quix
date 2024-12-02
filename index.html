@@ -1,0 +1,188 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+  <meta charset="utf-8">
+  <title>Quix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- For Google -->
+  <meta name="description" content="A website that lets you conveniently browse movies and their IMDB-ratings. Additionally, you can save your favourites permanently and come back to them whenever you please!" />
+  <meta name="author" content="Tarek Bermalm" />
+  <meta name="copyright" content="" />
+  <meta name="application-name" content="Quix" />
+
+  <!--tags from https://realfavicongenerator.net/-->
+  <link rel="apple-touch-icon" sizes="180x180" href="/quix/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/quix/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/quix/favicon-16x16.png">
+  <link rel="manifest" href="/quix/site.webmanifest">
+  <link rel="mask-icon" href="/quix/safari-pinned-tab.svg" color="#f4cb84">
+  <link rel="shortcut icon" href="/quix/favicon.ico">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-config" content="/quix/browserconfig.xml">
+  <meta name="theme-color" content="#f4cb84">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.css" />
+
+  <!--  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.css"/>-->
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+  <link rel="preload" href="fonts/abel/Abel-Regular.ttf" as="font" crossorigin="anonymous" />
+  <link rel="preload" href="fonts/ubuntu/Ubuntu-Regular.ttf" as="font" crossorigin="anonymous" />
+
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', '260797366', 'auto'); ga('set', 'anonymizeIp', true); ga('set', 'transport', 'beacon'); ga('send', 'pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async></script>  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D9173EV99F"></script>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-D9173EV99F');
+  </script>
+
+  <script data-ad-client="ca-pub-9398890138050578" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+<body>
+
+  <!-- Content -->
+  <div id="container">
+
+    <nav id="navbar">
+      <div id="dark-mode-toggle-container"></div>
+      <div id="scroll-to-top-container">
+      </div>
+      <div id="db-toggle-container">
+        <div id="db-styling-container" class="btn">
+          <span aria-label="Your favourites"></span>
+        </div>
+        <!-- content for favourite movies list -->
+        <div id="favourite-movies-container" class="hide">
+          <div id="favourite-movies-flex-container">
+            <div id="loading-sidebar" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            <div id="firebase-auth-container">
+              <div id="firebaseui-signup-container"></div>
+              <div id="auth-status">
+                <span id="auth-welcome"></span><span id="auth-name"></span>
+              </div>
+              <button id="sign-out-container" class="btn">
+                <span id="sign-out">Log out</span>
+              </button>
+            </div>
+            <p id="favourite-movies-description" class="hide">
+              Any movies you save to Quix will be displayed on this page. To save a movie, do a search and then press the save icon in the bottom right corner of each movie.
+            </p>
+            <hr id="hr-auth" class="hide">
+            <div id="convert-acc-container" class="hide">
+              <p id="convert-acc-description">
+                Do you want to keep using Quix? Upgrade your temporary login to a personal account and permanently access your saved movies.
+              </p>
+              <button id="convert-acc-btn" class="btn">Upgrade account</button>
+              <div id="convert-acc-registration" class="hide">
+              </div>
+            </div>
+            <hr id="hr-convert" class="hide">
+            <div id="title-and-list-container">
+              <div id="list-title">
+                <h3>Your favourites</h3><span id="icon-container"><span id="edit-favourite-movies-icon" class="btn"></span></span>
+              </div>
+
+              <span id="empty-list-placeholder">You have no saved favourites.</span>
+
+              <div id="favourite-movies-list"></div>
+              <button type="button" id="show-favourite-movies" class="btn">Show</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </nav>
+
+    <!--Main content: search bar and results-->
+    <div id="main-content-container">
+      <img id="logo" src="img/popcorn-1614707.png" alt="Logo">
+
+        <div id="title-container">
+          <span id="title">Quix</span>
+        </div>
+        <div id="subtitle-flex-container">
+          <span id="subtitle">Quickly index IMDB</span>
+        </div>
+
+      <form id="search-form" method="get" name="search-form" autocomplete="off">
+        <input id="search-box" name="query" type="text" placeholder="Enter movie title..." autofocus aria-label="Textfield for searching"><button  id="main-search-button" type="submit" class="btn" aria-label="Search"><i class="fa fa-search"></i></button>
+      </form>
+
+      <div id="loading-results" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+      <div class="result-container"></div>
+
+      <!-- modal to allow for saving a movie -->
+      <div id="modal-box" class="modal-box">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Save to favourites?</p>
+          <div class="modal-buttons-flex-container">
+            <button type="button" id="save" class="btn">Save</button> <button type="button" id="cancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- modal if movie already in favourites -->
+      <div id="default-modal" class="modal-box">
+        <div class="modal-content" id="default-modal-content">
+          <span class="close"></span>
+          <p>Something has gone wrong.</p>
+          <button type="button" id="okay" class="btn">Okay</button>
+        </div>
+      </div>
+
+      <!-- modal if user not logged in -->
+      <div id="modal-box-not-logged in" class="modal-box">
+        <div class="modal-content" id="not-logged-in-modal-content">
+          <span class="close"></span>
+          <p>This movie is already in your list of favourites.</p>
+          <button type="button" class="btn">Okay</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- End of content -->
+
+  <!-- Scripts -->
+
+  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
+  <script src="js/plugins.js"></script>
+
+  <script async src="js/main.js" type="text/javascript" defer></script>
+  <script src="js/dataAccessLayer.js" type="text/javascript" defer></script>
+
+  <!--Firebase tags-->
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js" ></script>
+
+  <!-- Firebase products
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js" ></script>
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js" ></script>
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js" ></script>
+  <script src="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.js" ></script>
+
+</body>
+
+</html>
