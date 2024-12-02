@@ -800,9 +800,8 @@ hr {
    Designing the list
    ========================================================================== */
 
-/*https://www.youtube.com/watch?v=dhLcyBCJ0r4*/
-
 #favourite-movies-list{
+  margin-top: 10px;
   font-size: 18px;
 
 }
