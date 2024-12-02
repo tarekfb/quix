@@ -1,4 +1,4 @@
-# Quix - ~~https://tbermalm.tech/quix/~~
+# Quix - https://64e65675ecae4d10b77d3bce--chipper-genie-d5a8fa.netlify.app/
 This is my first project in web development, written in 2019. I had practically 0 experience in programming. It indexes IMDB ratings by movie titles. There is also support for storing selected movies in a database, which is accessed through a personal account. Google Chrome Lighthouse: 97-100-93-100
 
 ![Google Chrome Lighthouse rating](chrome-lighthouse.png)
